@@ -1,5 +1,6 @@
-﻿using Domain.DTO.OrderModule.ItemCategoryDTOS;
-using Domain.Entity.Order;
+﻿using Domain.Common;
+using Domain.Entity.DTO.OrderModule.ItemCategoryDTOS;
+using Domain.Entity.Model.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Application.Interface
     public interface IItemCategoryService
     {
 
-        public Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesAsync(int pageNum, int pageSize);
+        public Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesAsync(PagingParams pagingParams);
         public Task<ItemCatogoryQueryDTO> GetItemCategoryWithItemsById(Guid categoryId);
-        public Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesWithItems(int pageNum, int pageSize);
+        public Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesWithItems(PagingParams pagingParams);
 
         public Task<ItemCatogoryQueryDTO> GetItemCategoryByIdAsync(Guid id);
 
@@ -23,7 +24,7 @@ namespace Application.Interface
         public Task UpdateItemCategoryAsync(ItemCategoryCommandDTO record);
 
 
-        public Task DeleteItemCategoryAsync(ItemCategoryCommandDTO ItemCategory);
+        public Task DeleteItemCategoryAsync(Guid id);
 
 
 

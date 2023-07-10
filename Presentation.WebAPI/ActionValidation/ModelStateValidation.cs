@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System.Linq;
 using System.Security.Principal;
 
-namespace ActionFilters.ActionFilters
+namespace Presentation.WebAPI.ActionValidation
 {
-    public class ValidationFilterAttribute : IActionFilter
+    public class ModelStateValidation : IActionFilter
     {
         public void OnActionExecuting(ActionExecutingContext context)
         {

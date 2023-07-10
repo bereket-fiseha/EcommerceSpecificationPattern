@@ -264,7 +264,6 @@ C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitect
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.AssemblyInfoInputs.cache
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.AssemblyInfo.cs
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.csproj.CoreCompileInputs.cache
-C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\staticwebassets\msbuild.Presentation.WebAPI.Microsoft.AspNetCore.StaticWebAssets.props
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\staticwebassets\msbuild.build.Presentation.WebAPI.props
@@ -281,3 +280,5 @@ C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitect
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.genruntimeconfig.cache
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\ref\Presentation.WebAPI.dll
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\obj\Debug\net7.0\Presentation.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\Presentation.WebAPI\bin\Debug\net7.0\Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer.dll

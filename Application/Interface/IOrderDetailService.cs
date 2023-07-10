@@ -1,7 +1,10 @@
 ﻿
-using Domain.DTO.OrderModule.ItemDTOS;
-using Domain.DTO.OrderModule.OrderDTOS;
-using Domain.Entity.Order;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.CustomerDTOS;
+using Domain.Entity.DTO.OrderModule.ItemDTOS;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+
+using Domain.Entity.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +15,10 @@ namespace Application.Interface
 {
     public interface IOrderDetailService
     {
-        public Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsAsync();
+        public Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsAsync(OrderDetailParams pagingParams);
 
-        public  Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsWithItemByOrderCartId(Guid orderCartId);
+        public  Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsWithItemByOrderCartId(OrderDetailParams orderDetailParams);
+        public Task<IEnumerable<CustomerOrderDetailQueryDTO>> GetAllCustomerOrderDetailsAsync(OrderDetailParams pagingParams);
 
 
         public Task<OrderDetailQueryDTO> GetOrderDetailByIdAsync(Guid id);
@@ -25,7 +29,7 @@ namespace Application.Interface
         public Task UpdateOrderDetailAsync(OrderDetailCommandDTO OrderDetail);
 
 
-        public Task DeleteOrderDetailAsync(OrderDetailCommandDTO OrderDetail);
+        public Task DeleteOrderDetailAsync(Guid id);
 
     }
 }

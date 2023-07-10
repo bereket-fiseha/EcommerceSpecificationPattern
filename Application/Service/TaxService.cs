@@ -1,11 +1,11 @@
 ﻿using Application.Interface;
 using AutoMapper;
-using Domain.DTO.OrderModule.OrderDTOS;
-
-using Domain.Entity.Order;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+using Domain.Entity.Model.Order;
+using Domain.Exceptions;
 using Domain.Interface.Repository.Common;
-
-
+using Domain.Specification.OrderModule.TaxSpecs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,9 +27,10 @@ namespace Application.Service
             _mapper=mapper;
         }
 
-        public async Task<IEnumerable<TaxQueryDTO>> GetAllTaxsAsync()
+        public async Task<IEnumerable<TaxQueryDTO>> GetAllTaxsAsync(PagingParams pagingParams)
         {
-           var Taxs= await _taxRepository.GetAllAsync(orderBy:x=>x.Id);
+            var spec = new PagedTaxByDateCreatedSpec(pagingParams);
+           var Taxs= await _taxRepository.GetBySpecificationAsync(spec);
               return _mapper.Map<IEnumerable<TaxQueryDTO>>(Taxs);
     
         }
@@ -49,15 +50,26 @@ namespace Application.Service
             record.Id = Tax.Id;
         }
 
-        public Task DeleteTaxAsync(TaxCommandDTO Tax)
+
+
+        public async Task UpdateTaxAsync(TaxCommandDTO taxDto)
         {
-            throw new NotImplementedException();
+            var duplicateEntity = await _taxRepository.GetByConditionAsync(filter: (x => x.ServiceTax!=taxDto.ServiceTax));
+            if (duplicateEntity.Any())
+            {
+                throw new DuplicateEntityException(nameof(Tax), nameof(Tax.ServiceTax), taxDto.ServiceTax);
+            }
+            var tax = _mapper.Map<Tax>(taxDto);
+            _taxRepository.Update(tax);
+            await _unitOfWork.SaveChangeAsync();
         }
 
-
-        public Task UpdateTaxAsync(TaxCommandDTO Tax)
+        public async Task DeleteTaxAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var record = await _taxRepository.GetByIdAsync(id);
+
+            _taxRepository.Delete(record);
+            await _unitOfWork.SaveChangeAsync();
         }
     }
 }

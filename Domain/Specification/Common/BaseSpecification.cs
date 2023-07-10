@@ -47,11 +47,11 @@ namespace Domain.Specification.Common
             Order = order;
         }
 
-        protected void AddPaging(int take, int skip)
+        protected void AddPaging(Paging paging)
         {
             IsPagingEnabled = true;
-            Take = take;
-            Skip = skip;
+            Take = paging.Take;
+            Skip = paging.Skip;
         }
 
         protected void AddGroupBy(Expression<Func<TEntity, object>> groupBy)

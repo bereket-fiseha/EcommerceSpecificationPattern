@@ -1,5 +1,5 @@
 ﻿using Domain.Common;
-using Domain.Entity.Order;
+
 using Domain.Interface.Repository.Common;
 using Domain.Interface.Specification;
 using Domain.Specification.Common;
@@ -38,7 +38,7 @@ namespace Infrastructure.Repository.Common
             Func<IQueryable<TEntity>,IOrderedQueryable<TEntity>> orderBy = null, 
             Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
         {
-            IQueryable<TEntity> query  = _dbContext.Set<TEntity>();
+            IQueryable<TEntity> query  = _dbContext.Set<TEntity>().AsNoTracking();
 
 
             if (include != null) {
@@ -57,12 +57,12 @@ namespace Infrastructure.Repository.Common
         }
         public async Task<TEntity?> GetByIdAsync(Guid id)
         {
-            return await _dbContext.Set<TEntity>().FindAsync(id);
+            return await _dbContext.Set<TEntity>().AsNoTracking().FirstAsync(x=>x.Id==id);
         }
         public virtual void Create(TEntity entity)
         {
             entity.Id = Guid.Empty;
-            entity.DateCreated = DateTime.Now.AddDays(1);
+            entity.DateCreated = DateTime.Now;
             _dbContext.Set<TEntity>().Add(entity);
         }
 

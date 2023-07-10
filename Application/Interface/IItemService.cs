@@ -1,6 +1,7 @@
 ﻿
-using Domain.DTO.OrderModule.ItemDTOS;
-using Domain.Entity.Order;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.ItemDTOS;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace Application.Interface
     public interface IItemService
     {
 
-        public Task<IEnumerable<ItemQueryDTO>> GetAllItemsAsync();
+        public Task<IEnumerable<ItemQueryDTO>> GetAllItemsAsync(PagingParams pagingParams);
 
 
 
@@ -24,7 +25,7 @@ namespace Application.Interface
         public Task UpdateItemAsync(ItemCommandDTO item);
 
 
-        public Task DeleteItemAsync(ItemCommandDTO item);
+        public Task DeleteItemAsync(Guid id);
 
 
 

@@ -1,8 +1,11 @@
-﻿using Application.Interface;
-using Domain.DTO.OrderModule.ItemCategoryDTOS;
-using Domain.Entity.Order;
+﻿
+using Application.Interface;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.ItemCategoryDTOS;
+using Domain.Entity.Model.Order;
 using Domain.Specification.OrderModule.ItemCategorySpecs;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.WebAPI.ActionValidation;
 
 namespace Presentation.WebAPI.Controllers.v2.Order
 {
@@ -18,20 +21,19 @@ namespace Presentation.WebAPI.Controllers.v2.Order
             _ItemCategoryService = ItemCategoryService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemCatogoryQueryDTO>>> GetAllItemCategories(int pageNum, int pageSize) {
+        public async Task<ActionResult<IEnumerable<ItemCatogoryQueryDTO>>> GetAllItemCategories([FromQuery]PagingParams pagingParams) {
 
             
-            var ItemCategories=await _ItemCategoryService.GetAllItemCategoriesAsync(pageNum:pageNum,pageSize:pageSize);
+            var ItemCategories=await _ItemCategoryService.GetAllItemCategoriesAsync(pagingParams);
 
-            //  return Ok(ItemCategories);
-            return Ok(new { data = new ItemCatogoryQueryDTO[] { new ItemCatogoryQueryDTO { Name="aaa",Description="dfadsf"}   } });
+            return Ok(ItemCategories);
         }
 
         [HttpGet("withitems")]
-        public async Task<ActionResult<IEnumerable<ItemCatogoryQueryDTO>>> GetAllItemCategoriesWithItems(int pageNum, int pageSize)
+        public async Task<ActionResult<IEnumerable<ItemCatogoryQueryDTO>>> GetAllItemCategoriesWithItems([FromQuery] PagingParams pagingParams)
         {
 
-            var itemCategories = await _ItemCategoryService.GetAllItemCategoriesWithItems(pageNum: pageNum, pageSize: pageSize);
+            var itemCategories = await _ItemCategoryService.GetAllItemCategoriesWithItems(pagingParams);
 
             return Ok(itemCategories);
         }
@@ -45,6 +47,7 @@ namespace Presentation.WebAPI.Controllers.v2.Order
         }
 
         [HttpPost]
+       [ServiceFilter(typeof(ModelStateValidation))]
         public async Task<ActionResult<ItemCategory>> CreateItemCategory([FromBody]ItemCategoryCommandDTO record)
         {
            
@@ -56,11 +59,15 @@ namespace Presentation.WebAPI.Controllers.v2.Order
             }
             else if (!ModelState.IsValid)
                     return BadRequest(ModelState);
-
-
-            await _ItemCategoryService.CreateItemCategoryAsync(record);
+            
+            try
+            {
+                await _ItemCategoryService.CreateItemCategoryAsync(record);
+            }
+            catch (Exception ex) { return StatusCode(500, "Internal Server Error"+ex.Message); }
             return StatusCode(201);
-        //    return CreatedAtRoute(nameof(GetItemCategoryById), new { id = record.Id }, record);
+
+            // return CreatedAtRoute(nameof(GetItemCategoryById), new { id = record.Id }, record);
         }
 
 

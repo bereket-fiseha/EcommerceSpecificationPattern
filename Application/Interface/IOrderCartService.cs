@@ -1,6 +1,8 @@
 ﻿
-using Domain.DTO.OrderModule.OrderDTOS;
-using Domain.Entity.Order;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+
+using Domain.Entity.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +14,13 @@ namespace Application.Interface
     public interface IOrderCartService
     {
         public Task<OrderCartQueryDTO> GetOrderCartWithTaxAndCustomerById(Guid id);
-        public Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsAsync();
+        public Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsAsync(OrderCartParams orderCartParms);
 
-        public  Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsByCustomerId(Guid customerId);
+        public  Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsByCustomerId(OrderCartParams orderCartParms);
 
-        public  Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsWithOrderDetailsByCustomerId(Guid customerId);
+        public  Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsWithOrderDetailsByCustomerId(OrderCartParams orderCartParms);
 
-        public  Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsWithOrderDetailsByCustomerIdAndDate(Guid customerId,DateTime? from,DateTime? to);
+        public  Task<IEnumerable<OrderCartQueryDTO>> GetAllOrderCartsWithOrderDetailsByCustomerIdAndDate(OrderCartParams orderCartParms);
 
         public Task<OrderCartQueryDTO> GetOrderCartByIdAsync(Guid id);
 
@@ -28,7 +30,7 @@ namespace Application.Interface
         public Task UpdateOrderCartAsync(OrderCartCommandDTO OrderCart);
 
 
-        public Task DeleteOrderCartAsync(OrderCartCommandDTO OrderCart);
+        public Task DeleteOrderCartAsync(Guid id);
 
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.Entity.Order;
+﻿using Domain.Entity.Model.Order;
 using Domain.Interface.Specification;
 using Domain.Specification.Common;
 using Microsoft.EntityFrameworkCore;

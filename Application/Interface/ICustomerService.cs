@@ -1,7 +1,7 @@
 ﻿
-using Domain.DTO.Order.CustomerDTOS;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.CustomerDTOS;
 
-using Domain.Entity.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +13,11 @@ namespace Application.Interface
     public interface ICustomerService
     {
 
-        public Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersAsync();
+        public Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersAsync(PagingParams pagingParams);
 
-        public Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersWithOrderCartsAsync();
+        public Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersWithOrderCartsAsync(PagingParams pagingParams);
 
+       // public Task<IEnumerable<CustomerOrderDetailQueryDTO>> GetAllCustomerOrderDetailsAsync(PagingParams pagingParams);
 
 
         public Task<CustomerQueryDTO> GetCustomerByIdAsync(Guid id);

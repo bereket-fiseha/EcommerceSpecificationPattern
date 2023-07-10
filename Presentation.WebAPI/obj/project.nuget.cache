@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2brm2ZLAfkadwET49k9kByEpzSkjYx8fVZ8oy/Ozg4qrKbleShaZgpymnaOp+0rv7LaYTw0y7F2hBeC/eL4wtw==",
+  "dgSpecHash": "3uksrR0WMK7yAwm3tuZ2iDn+JgUBuJA6vJugGrTcHuaywZKONX9ePC0BfsIBXa7sUamltBxFkvFW83yHkbvB9g==",
   "success": true,
   "projectFilePath": "C:\\Users\\codig\\OneDrive\\Desktop\\My Projects\\expense management app\\CodeArchitecture\\SpecificationPattern\\EcommerceSys\\Presentation.WebAPI\\Presentation.WebAPI.csproj",
   "expectedPackageFiles": [
@@ -19,6 +19,7 @@
     "C:\\Users\\codig\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\codig\\.nuget\\packages\\microsoft.aspnetcore.mvc.abstractions\\2.2.0\\microsoft.aspnetcore.mvc.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\codig\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning\\5.1.0\\microsoft.aspnetcore.mvc.versioning.5.1.0.nupkg.sha512",
+    "C:\\Users\\codig\\.nuget\\packages\\microsoft.aspnetcore.mvc.versioning.apiexplorer\\5.1.0\\microsoft.aspnetcore.mvc.versioning.apiexplorer.5.1.0.nupkg.sha512",
     "C:\\Users\\codig\\.nuget\\packages\\microsoft.aspnetcore.openapi\\7.0.5\\microsoft.aspnetcore.openapi.7.0.5.nupkg.sha512",
     "C:\\Users\\codig\\.nuget\\packages\\microsoft.aspnetcore.routing.abstractions\\2.2.0\\microsoft.aspnetcore.routing.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\codig\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",

@@ -22,7 +22,58 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Domain.Entity.Order.Item", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.Customer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateCreated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("LastUpdated")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Model.Order.Item", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +111,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.ItemCategory", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.ItemCategory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -91,7 +142,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("ItemCategories");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.OrderCart", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.OrderCart", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -133,7 +184,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("OrderCarts");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.OrderDetail", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.OrderDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,7 +229,7 @@ namespace Infrastructure.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.Tax", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.Tax", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -213,52 +264,9 @@ namespace Infrastructure.Migrations
                     b.ToTable("Tax");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Registration.Customer", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.Item", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("LastUpdated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Order.Item", b =>
-                {
-                    b.HasOne("Domain.Entity.Order.ItemCategory", "ItemCategory")
+                    b.HasOne("Domain.Entity.Model.Order.ItemCategory", "ItemCategory")
                         .WithMany("Items")
                         .HasForeignKey("ItemCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -267,15 +275,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("ItemCategory");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.OrderCart", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.OrderCart", b =>
                 {
-                    b.HasOne("Domain.Entity.Registration.Customer", "Customer")
+                    b.HasOne("Domain.Entity.Model.Order.Customer", "Customer")
                         .WithMany("OrderCarts")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Order.Tax", "Tax")
+                    b.HasOne("Domain.Entity.Model.Order.Tax", "Tax")
                         .WithMany()
                         .HasForeignKey("TaxId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -286,15 +294,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tax");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.OrderDetail", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.OrderDetail", b =>
                 {
-                    b.HasOne("Domain.Entity.Order.Item", "Item")
+                    b.HasOne("Domain.Entity.Model.Order.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entity.Order.OrderCart", "OrderCart")
+                    b.HasOne("Domain.Entity.Model.Order.OrderCart", "OrderCart")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderCartId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -305,19 +313,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("OrderCart");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.ItemCategory", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.Customer", b =>
+                {
+                    b.Navigation("OrderCarts");
+                });
+
+            modelBuilder.Entity("Domain.Entity.Model.Order.ItemCategory", b =>
                 {
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("Domain.Entity.Order.OrderCart", b =>
+            modelBuilder.Entity("Domain.Entity.Model.Order.OrderCart", b =>
                 {
                     b.Navigation("OrderDetails");
-                });
-
-            modelBuilder.Entity("Domain.Entity.Registration.Customer", b =>
-                {
-                    b.Navigation("OrderCarts");
                 });
 #pragma warning restore 612, 618
         }

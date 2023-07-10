@@ -1,7 +1,9 @@
 ﻿using Application.Interface;
 using Domain.Common;
-using Domain.DTO.OrderModule.ItemCategoryDTOS;
-using Domain.Entity.Order;
+using Domain.Entity.DTO.OrderModule.ItemCategoryDTOS;
+
+using Domain.Entity.Model.Order;
+using Domain.Exceptions;
 using Domain.Interface.Repository.Common;
 using Domain.Specification.OrderModule.ItemCategorySpecs;
 using Microsoft.EntityFrameworkCore;
@@ -26,12 +28,11 @@ namespace Application.Service
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesAsync(int pageNum,int pageSize)
+        public async Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesAsync(PagingParams pagingParams)
         {
 
-            var paging = new Paging(pageSize: pageSize, pageNum: pageNum);
 
-            var spec = new PagedItemCategoryByDateCreatedSpec(take:paging.Take,skip:paging.Skip);
+            var spec = new PagedItemCategoryByDateCreatedSpec(pagingParams);
 
        var itemCategories= await  _itemCategoryRepository.GetBySpecificationAsync(spec);
             return _mapper.Map<IEnumerable<ItemCatogoryQueryDTO>>(itemCategories);
@@ -46,10 +47,10 @@ namespace Application.Service
             return _mapper.Map<ItemCatogoryQueryDTO>(itemCategories);
         }
 
-        public async Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesWithItems(int pageNum,int pageSize)
+        public async Task<IEnumerable<ItemCatogoryQueryDTO>> GetAllItemCategoriesWithItems(PagingParams pagingParams)
         {
-            var paging = new Paging(pageSize:pageSize,pageNum:pageNum) ;
-            var spec = new PagedItemCategoryWithItemsByDateCreatedSpec(skip:paging.Skip,take:paging.Take);
+
+            var spec = new PagedItemCategoryWithItemsByDateCreatedSpec(pagingParams);
             var itemCategories = await _itemCategoryRepository.GetBySpecificationAsync(spec);
 
             return _mapper.Map<IEnumerable<ItemCatogoryQueryDTO>>(itemCategories);
@@ -61,7 +62,13 @@ namespace Application.Service
         }
 
         public async Task CreateItemCategoryAsync(ItemCategoryCommandDTO record)
-        {   var itemCategory = _mapper.Map<ItemCategory>(record);
+        {
+            var duplicateEntity =await  _itemCategoryRepository.GetByConditionAsync(x => x.Name == record.Name);
+            if (duplicateEntity.Any()) {
+                throw new DuplicateEntityException(nameof(ItemCategory), nameof(ItemCategory.Name), record.Name);
+            }
+            
+            var itemCategory = _mapper.Map<ItemCategory>(record);
             _itemCategoryRepository.Create(itemCategory);
 
         await    _unitOfWork.SaveChangeAsync();
@@ -69,15 +76,26 @@ namespace Application.Service
 
         }
 
-        public Task DeleteItemCategoryAsync(ItemCategoryCommandDTO ItemCategory)
+        public async Task DeleteItemCategoryAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var record = await _itemCategoryRepository.GetByIdAsync(id);
+
+            _itemCategoryRepository.Delete(record);
+            await _unitOfWork.SaveChangeAsync();
         }
 
 
-        public Task UpdateItemCategoryAsync(ItemCategoryCommandDTO ItemCategory)
+        public async Task UpdateItemCategoryAsync(ItemCategoryCommandDTO record)
         {
-            throw new NotImplementedException();
+            var duplicateEntity = await _itemCategoryRepository.GetByConditionAsync(filter:(x => x.Name == record.Name&&x.Id!=record.Id));
+            if (duplicateEntity.Any())
+            {
+                throw new DuplicateEntityException(nameof(ItemCategory), nameof(ItemCategory.Name), record.Name);
+            }
+            var itemCategory = _mapper.Map<ItemCategory>(record);
+            _itemCategoryRepository.Update(itemCategory);
+            await _unitOfWork.SaveChangeAsync();
+
         }
 
     }

@@ -1,10 +1,12 @@
 ﻿using Application.Interface;
 using AutoMapper;
-using Domain.DTO.OrderModule.ItemDTOS;
-using Domain.Entity.Order;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.ItemCategoryDTOS;
+using Domain.Entity.DTO.OrderModule.ItemDTOS;
+using Domain.Entity.Model.Order;
 using Domain.Exceptions;
 using Domain.Interface.Repository.Common;
-
+using Domain.Specification.OrderModule.ItemSpecs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -30,9 +32,11 @@ namespace Application.Service
             _mapper=mapper;
         }
 
-        public async Task<IEnumerable<ItemQueryDTO>> GetAllItemsAsync()
+        public async Task<IEnumerable<ItemQueryDTO>> GetAllItemsAsync(PagingParams pagingParams)
         {
-           var items= await _itemRepository.GetByConditionAsync(include:x=>x.Include(i=>i.ItemCategory),orderBy:x=>x.OrderBy(i=>i.Id));
+            var spec = new PagedItemWithItemCategoryByDateCreatedSpec(pagingParams);
+
+            var items = await _itemRepository.GetBySpecificationAsync(spec);
               return _mapper.Map<IEnumerable<ItemQueryDTO>>(items);
     
         }
@@ -46,9 +50,9 @@ namespace Application.Service
 
         public async Task CreateItemAsync([FromBody]ItemCommandDTO record)
         {
-            var existingItem= await _itemRepository.GetByConditionAsync(filter:x=>x.Name==record.Name);
-            if (existingItem != null) {
-                throw new  EntityAlreadyExistsException("Item","name",record.Name);
+            var duplicateEntity= await _itemRepository.GetByConditionAsync(filter:x=>x.Name==record.Name);
+            if (duplicateEntity.Any()) {
+                throw new  DuplicateEntityException(nameof(Item),nameof(Item.Name),record.Name);
             }
 
             var item =_mapper.Map<Item>(record);
@@ -59,15 +63,27 @@ namespace Application.Service
 
         }
 
-        public Task DeleteItemAsync(ItemCommandDTO item)
+        public async Task DeleteItemAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var record = await _itemRepository.GetByIdAsync(id);
+
+            _itemRepository.Delete(record);
+            await _unitOfWork.SaveChangeAsync();
         }
 
 
-        public Task UpdateItemAsync(ItemCommandDTO item)
+        public async Task UpdateItemAsync(ItemCommandDTO record)
         {
-            throw new NotImplementedException();
+            var duplicateEntity = await _itemRepository.GetByConditionAsync(filter: (x => x.Name == record.Name && x.Id != record.Id));
+            if (duplicateEntity.Any())
+            {
+                throw new DuplicateEntityException(nameof(Item), nameof(Item.Name), record.Name);
+            }
+            var item = _mapper.Map<Item>(record);
+            _itemRepository.Update(item);
+            await _unitOfWork.SaveChangeAsync();
+
         }
+
     }
 }

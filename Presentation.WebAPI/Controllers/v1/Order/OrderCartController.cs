@@ -1,12 +1,14 @@
 ﻿using Application.Interface;
 using Application.Service;
-using Domain.DTO.OrderModule.ItemCategoryDTOS;
-using Domain.DTO.OrderModule.OrderDTOS;
-using Domain.Entity.Order;
+
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+
+using Domain.Entity.Parameters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.WebAPI.Controllers.v1.Order
 {
+    [ApiController]
     [ApiVersion("1.0")]
     [Route("/api/v{version:apiVersion}/ordercarts")]
     public class OrderCartController : ControllerBase
@@ -20,26 +22,27 @@ namespace Presentation.WebAPI.Controllers.v1.Order
             _customerService = customerService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderCartQueryDTO>>> GetAllOrderCarts() {
+        public async Task<ActionResult<IEnumerable<OrderCartQueryDTO>>> GetAllOrderCarts([FromQuery]OrderCartParams orderCartParams) {
 
-            var OrderCarts=await _orderCartService.GetAllOrderCartsAsync();
+
+            var OrderCarts=await _orderCartService.GetAllOrderCartsAsync(orderCartParams);
 
             return Ok(OrderCarts);
         }
 
         [HttpGet("withorderdetails/cutomerId{customerId}")]
-        public async Task<ActionResult<IEnumerable<OrderCartQueryDTO>>> GetAllOrderCartsWithOrderDetailsByCustomerId(Guid customerId)
+        public async Task<ActionResult<IEnumerable<OrderCartQueryDTO>>> GetAllOrderCartsWithOrderDetailsByCustomerId([FromQuery]OrderCartParams orderCartParams)
         {
 
-            var orderCarts = await _orderCartService.GetAllOrderCartsWithOrderDetailsByCustomerId(customerId);
+            var orderCarts = await _orderCartService.GetAllOrderCartsWithOrderDetailsByCustomerId(orderCartParams);
 
             return Ok(orderCarts);
         }
         [HttpGet("cutomerId{customerId}")]
-        public async Task<ActionResult<IEnumerable<OrderCartQueryDTO>>> GetAllOrderCartsByCustomerId(Guid customerId)
+        public async Task<ActionResult<IEnumerable<OrderCartQueryDTO>>> GetAllOrderCartsByCustomerId([FromQuery]OrderCartParams orderCartParams)
         {
 
-            var orderCarts = await _orderCartService.GetAllOrderCartsByCustomerId(customerId);
+            var orderCarts = await _orderCartService.GetAllOrderCartsByCustomerId(orderCartParams);
 
             return Ok(orderCarts);
         }

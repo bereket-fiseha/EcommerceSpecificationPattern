@@ -1,10 +1,14 @@
 ﻿using Application.Interface;
 using AutoMapper;
-using Domain.DTO.Order.CustomerDTOS;
-using Domain.Entity.Order;
-using Domain.Entity.Registration;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.CustomerDTOS;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+using Domain.Entity.Model.Order;
+using Domain.Entity.Parameters;
 using Domain.Interface.Repository.Common;
 using Domain.Specification.OrderModule;
+using Domain.Specification.OrderModule.CustomerSpecs;
+using Domain.Specification.OrderModule.OrderCartSpecs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,13 +32,15 @@ namespace Application.Service
             _mapper=mapper;
         }
 
-        public async Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersAsync()
+        public async Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersAsync(PagingParams pagingParams)
         {
-           var customers= await _CustomerRepository.GetAllAsync(orderBy:x=>x.Id);
-              return _mapper.Map<IEnumerable<CustomerQueryDTO>>(customers);
-    
+            var spec = new PagedCustomerByDateCreated(pagingParams);
+            var customers = await _CustomerRepository.GetBySpecificationAsync(spec);
+            return _mapper.Map<IEnumerable<CustomerQueryDTO>>(customers);
         }
-        public async Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersWithOrderCartsAsync()
+       
+
+        public async Task<IEnumerable<CustomerQueryDTO>> GetAllCustomersWithOrderCartsAsync(PagingParams pagingParams)
         {
 
             //   var Customers = await _CustomerRepository.GetAllCustomersWithOrderCart(orderBy: x => x.Id);
@@ -45,7 +51,7 @@ namespace Application.Service
             //    .ThenInclude(i=>i.ItemCategory),
             //    orderBy:c=>c.OrderBy(c=>c.Id) );
 
-            var spec = new CustomerWithOrderCartSortedByIdSpecification();
+            var spec = new PagedCustomerWithOrderCartsByDateCreated(pagingParams);
             var customers = await _CustomerRepository.GetBySpecificationAsync(spec);
             return _mapper.Map<IEnumerable<CustomerQueryDTO>>(customers);
         }
@@ -76,6 +82,9 @@ namespace Application.Service
             throw new NotImplementedException();
         }
 
-       
+        public Task<IEnumerable<CustomerOrderDetailQueryDTO>> GetAllCustomerOrderDetailsAsync(PagingParams pagingParams)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

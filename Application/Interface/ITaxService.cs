@@ -1,7 +1,7 @@
 ﻿
-using Domain.DTO.OrderModule.OrderDTOS;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
 
-using Domain.Entity.Order;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ namespace Application.Interface
     public interface ITaxService
     {
 
-        public Task<IEnumerable<TaxQueryDTO>> GetAllTaxsAsync();
+        public Task<IEnumerable<TaxQueryDTO>> GetAllTaxsAsync(PagingParams pagingParams);
 
 
 
@@ -25,7 +25,7 @@ namespace Application.Interface
         public Task UpdateTaxAsync(TaxCommandDTO Tax);
 
 
-        public Task DeleteTaxAsync(TaxCommandDTO Tax);
+        public Task DeleteTaxAsync(Guid taxId);
 
 
 

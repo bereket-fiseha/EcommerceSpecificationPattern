@@ -9,9 +9,10 @@ using Microsoft.Extensions.Configuration;
 using AutoMapper;
 using System.Text.Json.Serialization;
 using Domain.Interface.DomainLogic;
-using Domain.DomainLogic;
 using Microsoft.AspNetCore.Mvc;
-using ActionFilters.ActionFilters;
+
+using Domain.DomainLogic;
+using Presentation.WebAPI.ActionValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,12 +21,20 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddApiVersioning(config =>
 {
     // Specify the default API Version as 1.0
-    config.DefaultApiVersion = new ApiVersion(1, 0);
+   // config.DefaultApiVersion = new ApiVersion(1, 0);
+   
     // If the client hasn't specified the API version in the request, use the default API version number 
-    config.AssumeDefaultVersionWhenUnspecified = true;
+   // config.AssumeDefaultVersionWhenUnspecified = true;
     // Advertise the API versions supported for the particular endpoint
     config.ReportApiVersions = true;
+   
 });
+builder.Services.AddVersionedApiExplorer(
+    options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -38,7 +47,7 @@ builder.Services.AddDbContext<ECDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ECDB"));
 
 });
-builder.Services.AddScoped<ValidationFilterAttribute>();
+builder.Services.AddScoped<ModelStateValidation>();
 builder.Services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -65,17 +74,17 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 //}); 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
-
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger().UseApiVersioning();
+    app.UseSwaggerUI();
+}
 app.UseAuthorization();
 
 app.MapControllers();
+// Configure the HTTP request pipeline.
 
 app.Run();

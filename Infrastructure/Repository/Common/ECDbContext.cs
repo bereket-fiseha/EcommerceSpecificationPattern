@@ -1,5 +1,4 @@
-﻿using Domain.Entity.Order;
-using Domain.Entity.Registration;
+﻿using Domain.Entity.Model.Order;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

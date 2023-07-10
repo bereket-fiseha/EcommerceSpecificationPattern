@@ -1,6 +1,9 @@
 {
-  "GlobalConfiguration": {},
-  "ReRoutes": [
+
+  "GlobalConfiguration": {
+  },
+ 
+  "Routes": [
     {
       "DownstreamPathTemplate": "/api/{version}/{everything}",
       "DownstreamScheme": "https",
@@ -10,14 +13,24 @@
           "Port": 44397
         }
       ],
-      "UpstreamPathTemplate": "gateway/api/order/{version}/{everything}",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
+
+      "UpstreamPathTemplate": "/gateway/api/{version}/{everything}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET" ],
+      "FileCacheOptions": {
+        "TtlSeconds": 10
+      },
+      "RateLimitOptions": {
+        "ClientWhitelist": [
+
+        ],
+        "EnableRateLimiting": true,
+        "Period": "5s",
+        "PeriodTimespan": 3,
+        "Limit": 1,
+        "HttpStatusCode": 429
+      }
+
     }
-  ],
-  "RateLimitOptions": {
-    "EnableRateLimiting": true,
-    "Period": "5s",
-    "PeriodTimespan": 10,
-    "Limit": 3
-  }
+  ]
+
 }

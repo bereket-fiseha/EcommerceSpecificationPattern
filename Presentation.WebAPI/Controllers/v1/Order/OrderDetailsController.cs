@@ -1,12 +1,13 @@
 ﻿using Application.Interface;
 using Application.Service;
-using Domain.DTO.OrderModule.ItemCategoryDTOS;
-using Domain.DTO.OrderModule.OrderDTOS;
-using Domain.Entity.Order;
+using Domain.Entity.DTO.OrderModule.ItemCategoryDTOS;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+using Domain.Entity.Parameters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.WebAPI.Controllers.v1.Order
 {
+    [ApiController]
     [ApiVersion("1.0")]
     [Route("/api/v{version:apiVersion}/orderdetails")]
     public class OrderDetailController : ControllerBase
@@ -21,30 +22,31 @@ namespace Presentation.WebAPI.Controllers.v1.Order
             _itemService = itemService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDetailQueryDTO>>> GetAllOrderDetails()
+        public async Task<ActionResult<IEnumerable<OrderDetailQueryDTO>>> GetAllOrderDetails([FromQuery] OrderDetailParams orderDetailParams)
         {
 
-            var OrderDetails = await _orderDetailService.GetAllOrderDetailsAsync();
+            var OrderDetails = await _orderDetailService.GetAllOrderDetailsAsync(orderDetailParams);
+
+            return Ok(OrderDetails);
+        }
+
+        [HttpGet("customerorderdetails")]
+        public async Task<ActionResult<IEnumerable<OrderDetailQueryDTO>>> GetAllCustomerOrderDetails([FromQuery] OrderDetailParams orderDetailParams)
+        {
+
+            var OrderDetails = await _orderDetailService.GetAllCustomerOrderDetailsAsync(orderDetailParams);
 
             return Ok(OrderDetails);
         }
         [HttpGet("ordercartid={orderCartId}")]
-        public async Task<ActionResult<IEnumerable<ItemCatogoryQueryDTO>>> GetAllOrderDetails(Guid orderCartId)
+        public async Task<ActionResult<IEnumerable<ItemCatogoryQueryDTO>>> GetAllOrderDetailsByOrderCartId([FromQuery] OrderDetailParams orderDetailParams)
         {
 
-            var OrderDetails = await _orderDetailService.GetAllOrderDetailsAsync();
+            var OrderDetails = await _orderDetailService.GetAllOrderDetailsWithItemByOrderCartId(orderDetailParams);
 
             return Ok(OrderDetails);
         }
 
-        [HttpGet("withorderitems/orderCartId{orderCartId}")]
-        public async Task<ActionResult<IEnumerable<OrderDetailQueryDTO>>> GetAllOrderDetailsByOrderCartId(Guid orderCartId)
-        {
-
-            var OrderDetails = await _orderDetailService.GetAllOrderDetailsWithItemByOrderCartId(orderCartId);
-
-            return Ok(OrderDetails);
-        }
 
 
         [HttpGet("{id}", Name = "GetOrderDetailById")]

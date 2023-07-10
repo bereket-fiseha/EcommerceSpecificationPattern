@@ -7,6 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interface\**" />
+    <Compile Remove="Service\**" />
+    <EmbeddedResource Remove="Interface\**" />
+    <EmbeddedResource Remove="Service\**" />
+    <None Remove="Interface\**" />
+    <None Remove="Service\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Interface\ICustomerService.cs" />
+    <Compile Include="Interface\IItemCategoryService.cs" />
+    <Compile Include="Interface\IItemService.cs" />
+    <Compile Include="Interface\IOrderCartService.cs" />
+    <Compile Include="Interface\IOrderDetailService.cs" />
+    <Compile Include="Interface\ITaxService.cs" />
+    <Compile Include="Service\CustomerService.cs" />
+    <Compile Include="Service\ItemCategoryService.cs" />
+    <Compile Include="Service\ItemService.cs" />
+    <Compile Include="Service\OrderCartService.cs" />
+    <Compile Include="Service\OrderDetailService.cs" />
+    <Compile Include="Service\TaxService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="7.0.1" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="AutoMapper" Version="12.0.1" />

@@ -1,10 +1,14 @@
 ﻿using Application.Interface;
-using Domain.DTO.OrderModule.ItemDTOS;
-using Domain.DTO.OrderModule.OrderDTOS;
-using Domain.Entity.Order;
-using Domain.Entity.Registration;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.CustomerDTOS;
+using Domain.Entity.DTO.OrderModule.ItemDTOS;
+using Domain.Entity.DTO.OrderModule.OrderDTOS;
+using Domain.Entity.Model.Order;
+using Domain.Entity.Parameters;
+using Domain.Exceptions;
 using Domain.Interface.DomainLogic;
 using Domain.Interface.Repository.Common;
+using Domain.Specification.OrderModule.OrderDetailSpecs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -49,21 +53,43 @@ namespace Application.Service
             record.Id = orderDetail.Id;
         }
 
-        public Task DeleteOrderDetailAsync(OrderDetailCommandDTO OrderDetail)
+        public async Task DeleteOrderDetailAsync(Guid id)
         {
-            throw new NotImplementedException();
+
+            var record = await _orderDetailRepository.GetByIdAsync(id);
+
+            _orderDetailRepository.Delete(record);
+     
+            //on delete substruct from order cart
+            var orderCart = await _orderCartRepository.GetByIdAsync(record.OrderCartId);
+            if (orderCart != null)
+            {
+                orderCart.TotalPrice -= record.NetTotalPrice;
+                _orderCartRepository.Update(orderCart);
+            }
+            await _unitOfWork.SaveChangeAsync();
         }
 
-        public async Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsAsync()
+        public async Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsAsync(OrderDetailParams orderDetailParams)
         {
-            return _mapper.Map<IEnumerable<OrderDetailQueryDTO>>(await _orderDetailRepository.GetAllAsync(orderBy:x=>x.Id));
-        }
+            var spec = new PagedOrderDetailsByDateCreated(orderDetailParams);
 
-        public async Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsWithItemByOrderCartId(Guid orderCartId)
+            var orderDetails =await _orderDetailRepository.GetBySpecificationAsync(spec);
+            return _mapper.Map<IEnumerable<OrderDetailQueryDTO>>(orderDetails);
+        }
+        public async Task<IEnumerable<CustomerOrderDetailQueryDTO>> GetAllCustomerOrderDetailsAsync(OrderDetailParams orderDetailParams)
         {
-            return _mapper.Map<IEnumerable<OrderDetailQueryDTO>>(await _orderDetailRepository.GetByConditionAsync(filter:o=>o.OrderCartId==orderCartId,
-                                                                                                                  include:x=>x.Include(o=>o.Item).ThenInclude(i=>i.ItemCategory),
-                                                                                                                   orderBy:x=>x.OrderBy(o=>o.Id)));
+            var spec = new PagedCustomerOrderDetailsWithItemsByDateCreated(orderDetailParams);
+            var customerOrderDetails = await _orderDetailRepository.GetBySpecificationAsync(spec);
+            return _mapper.Map<IEnumerable<CustomerOrderDetailQueryDTO>>(customerOrderDetails);
+
+
+        }
+        public async Task<IEnumerable<OrderDetailQueryDTO>> GetAllOrderDetailsWithItemByOrderCartId(OrderDetailParams orderDetailParams)
+        {
+            var spec = new PagedOrderDetailWithItemsFilteredByOrderCartIdByDateCreated(orderDetailParams);                                                                                                                                                                      
+             var orderDetails = await _orderDetailRepository.GetBySpecificationAsync(spec);
+            return _mapper.Map<IEnumerable<OrderDetailQueryDTO>>(orderDetails);
         }
 
         public Task<OrderDetailQueryDTO> GetOrderDetailByIdAsync(Guid id)
@@ -71,9 +97,29 @@ namespace Application.Service
             throw new NotImplementedException();
         }
 
-        public Task UpdateOrderDetailAsync(OrderDetailCommandDTO OrderDetail)
+        public async Task UpdateOrderDetailAsync(OrderDetailCommandDTO orderDetail)
         {
-            throw new NotImplementedException();
+            var duplicateEntity = await _orderDetailRepository.GetByConditionAsync(filter: (x => x.ItemId == orderDetail.ItemId && x.OrderCartId != orderDetail.OrderCartId));
+            if (duplicateEntity.Any())
+            {
+                throw new DuplicateEntityException(nameof(OrderDetail), nameof(OrderDetail.ItemId), orderDetail.ItemId);
+            }
+            var oldEntity = await _orderDetailRepository.GetByIdAsync(orderDetail.Id);
+            var entity = _mapper.Map<OrderDetail>(orderDetail);
+            _orderDetailRepository.Update(entity);
+            await _unitOfWork.SaveChangeAsync();
+            if (oldEntity.NetTotalPrice != orderDetail.NetTotalPrice) {
+                var orderCart = await _orderCartRepository.GetByIdAsync(orderDetail.OrderCartId);
+                if (orderCart != null)
+                {
+                    orderCart.TotalPrice -= oldEntity.NetTotalPrice;
+                    orderCart.TotalPrice += orderDetail.NetTotalPrice;
+
+                    _orderCartRepository.Update(orderCart);
+                }
+
+            }
+            _unitOfWork.SaveChangeAsync();
         }
     }
 }

@@ -15,6 +15,11 @@ namespace Domain.Common
         _skip = pageSize*(pageNum-1);
             _take = pageSize;
         }
+        public Paging(PagingParams pagingParams)
+        {
+            _skip = pagingParams.PageSize * (pagingParams.PageNumber - 1);
+            _take = pagingParams.PageSize;
+        }
         public int Skip => _skip;
 
         public int Take => _take;

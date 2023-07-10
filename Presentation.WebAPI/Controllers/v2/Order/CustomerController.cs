@@ -1,11 +1,13 @@
 ﻿using Application.Interface;
-using Domain.DTO.Order.CustomerDTOS;
-using Domain.Entity.Order;
-using Domain.Entity.Registration;
+using Domain.Common;
+using Domain.Entity.DTO.OrderModule.CustomerDTOS;
+using Domain.Entity.Model.Order;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.WebAPI.Controllers.v2.Order
 {
+    [ApiController]
     [ApiVersion("2.0")]
     [Route("/api/v{version:apiVersion}/customers")]
     public class CustomerController : ControllerBase
@@ -16,17 +18,18 @@ namespace Presentation.WebAPI.Controllers.v2.Order
             _customerService = customerService;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CustomerQueryDTO>>> GetAllCustomers() {
+        public async Task<ActionResult<IEnumerable<CustomerQueryDTO>>> GetAllCustomers([FromQuery]PagingParams pagingParams) {
 
-            var customers=await _customerService.GetAllCustomersAsync();
+            //  var customers=await _customerService.GetAllCustomersAsync(pagingParams);
 
-            return Ok(customers);
+            //  return Ok(customers);
+            return Ok(new CustomerQueryDTO[] { new CustomerQueryDTO {UserName="beka",FirstName="Heri",LastName="Fkadu",PhoneNumber="093483434" } });
         }
         [HttpGet("withordercarts")]
-        public async Task<ActionResult<IEnumerable<CustomerQueryDTO>>> GetAllCustomersWithOrderCarts()
+        public async Task<ActionResult<IEnumerable<CustomerQueryDTO>>> GetAllCustomersWithOrderCarts([FromQuery]PagingParams pagingParams)
         {
 
-            var customers = await _customerService.GetAllCustomersWithOrderCartsAsync();
+            var customers = await _customerService.GetAllCustomersWithOrderCartsAsync(pagingParams);
 
             return Ok(customers);
         }

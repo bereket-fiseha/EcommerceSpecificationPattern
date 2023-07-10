@@ -1,4 +1,4 @@
-﻿using Domain.DTO.OrderModule.ItemCategoryDTOS;
+﻿using Domain.Entity.DTO.OrderModule.ItemCategoryDTOS;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.WebUI.Constant;
 using System.Net;

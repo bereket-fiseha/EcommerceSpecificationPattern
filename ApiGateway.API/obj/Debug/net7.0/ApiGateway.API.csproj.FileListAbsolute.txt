@@ -40,3 +40,13 @@ C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitect
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\obj\Debug\net7.0\ApiGateway.API.pdb
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\obj\Debug\net7.0\ApiGateway.API.genruntimeconfig.cache
 C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\obj\Debug\net7.0\ref\ApiGateway.API.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\CacheManager.Core.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\CacheManager.Microsoft.Extensions.Configuration.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\CacheManager.Microsoft.Extensions.Logging.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\Ocelot.Cache.CacheManager.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.0\System.Diagnostics.PerformanceCounter.dll
+C:\Users\codig\OneDrive\Desktop\My Projects\expense management app\CodeArchitecture\SpecificationPattern\EcommerceSys\ApiGateway.API\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll

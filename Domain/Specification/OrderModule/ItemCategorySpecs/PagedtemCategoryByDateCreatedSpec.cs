@@ -1,4 +1,4 @@
-﻿using Domain.Entity.Order;
+﻿using Domain.Entity.Model.Order;
 using Domain.Interface.Specification;
 using Domain.Specification.Common;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +13,10 @@ namespace Domain.Specification.OrderModule.ItemCategorySpecs
     public class PagedItemCategoryByDateCreatedSpec:BaseSpecification<ItemCategory>
     {
 
-        public PagedItemCategoryByDateCreatedSpec(int take ,int skip) {
-            AddPaging(take, skip);
-            AddSorting(x => x.OrderByDescending(i=>i.DateCreated));
-        
+        public PagedItemCategoryByDateCreatedSpec(PagingParams pagingParams) {
+             AddSorting(x => x.OrderByDescending(i=>i.DateCreated));
+            AddPaging(paging: new Paging(pageNum: pagingParams.PageNumber, pageSize: pagingParams.PageSize));
+
         }
     }
 }
